@@ -9,14 +9,17 @@ OBJ_DIR = obj
 SRC = $(SRC_DIR)/main.cpp \
 	$(SRC_DIR)/Matt_daemon.cpp \
 	$(SRC_DIR)/Tintin_reporter.cpp \
-	$(SRC_DIR)/Server.cpp
+	$(SRC_DIR)/Server.cpp \
+	$(SRC_DIR)/Auth.cpp
 
 OBJ = $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC))
+
+LDLIBS = -lcrypt
 
 all: $(NAME)
 
 $(NAME): $(OBJ_DIR) $(OBJ)
-	g++ $(CXXFLAGS) $(OBJ) -o $(NAME)
+	g++ $(CXXFLAGS) $(OBJ) $(LDLIBS) -o $(NAME)
 	@echo "Compilation complete. Run with sudo ./$(NAME)"
 
 $(OBJ_DIR):

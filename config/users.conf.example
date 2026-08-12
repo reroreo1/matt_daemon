@@ -1,0 +1,12 @@
+# Matt_daemon client credentials.
+# Copy this file to /etc/matt_daemon/users.conf and edit it, then:
+#   sudo chmod 600 /etc/matt_daemon/users.conf
+#   sudo chown root:root /etc/matt_daemon/users.conf
+#
+# Format: one entry per line, "username:hash".
+# Passwords are stored as glibc SHA-512 crypt() hashes ($6$...), never in
+# plaintext. Generate a hash for a new user with:
+#   openssl passwd -6 -salt "$(openssl rand -hex 8)" 'your-password-here'
+#
+# The line below is an example only (password: "changeme") — replace it.
+admin:$6$testsalt$HbnoQb6fCusO7lh5USBrwwChnv3cbJkG0v9SdBwBW3esN6yZqMimNaiVaB.RABGqFhoqGLXXN2XsVrjrXBZcm0

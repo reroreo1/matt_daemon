@@ -2,7 +2,7 @@
 
 int main() {
     try{
-        MattDaemon::is_root();  
+        // MattDaemon::is_root();
         MattDaemon daemon;
         daemon.start();
         return EXIT_SUCCESS;
