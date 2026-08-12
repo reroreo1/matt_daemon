@@ -87,6 +87,8 @@ bool Server::accept_new_connection() {
 
     if (poll_fds.size() - 1 >= MAX_CLIENTS) {
         reporter->log("Maximum clients reached, rejecting connection", Tintin_reporter::Level::INFO);
+        send_line(client_fd, "Server full. Try again later.\n");
+        ::shutdown(client_fd, SHUT_RDWR);
         close(client_fd);
         return false;
     }
@@ -241,7 +243,11 @@ bool Server::run(volatile sig_atomic_t& signal_received) {
 
         for (size_t i = 1; i < poll_fds.size(); i++) {
             if (poll_fds[i].revents & POLLIN) {
+                size_t before = poll_fds.size();
                 handle_client_message(i);
+                if (poll_fds.size() < before) {
+                    i--;
+                }
             }
         }
     }
@@ -251,6 +257,8 @@ bool Server::run(volatile sig_atomic_t& signal_received) {
 
 void Server::shutdown() {
     for (size_t i = 1; i < poll_fds.size(); i++) {
+        send_line(poll_fds[i].fd, "Server is shutting down. Goodbye.\n");
+        ::shutdown(poll_fds[i].fd, SHUT_RDWR);
         close(poll_fds[i].fd);
     }
 
